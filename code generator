@@ -1,0 +1,24 @@
+def generate(ast):
+    output = []
+
+    for node in ast:
+        if node[0] == "assign":
+            output.append(f"{node[1]} = {node[2][1]}")
+
+        elif node[0] == "print":
+            output.append(f"print({node[1]})")
+
+        elif node[0] == "if":
+            cond = node[1]
+            output.append(f"if {cond[0][1]} {cond[1]} {cond[2][1]}:")
+
+            for stmt in node[2]:
+                if stmt[0] == "assign":
+                    output.append(f"    {stmt[1]} = {stmt[2][1]}")
+
+            if node[3]:
+                output.append("else:")
+                for stmt in node[3]:
+                    output.append(f"    print('dak jalan')")
+
+    return "\n".join(output)
