@@ -1,0 +1,12 @@
+class Semantic:
+    def __init__(self):
+        self.symbol = {}
+
+    def check(self, ast):
+        for node in ast:
+            if node[0] == "assign":
+                self.symbol[node[1]] = "int"
+
+            elif node[0] == "print":
+                if node[1] not in self.symbol:
+                    print("Peringatan: variabel belum diisi")
