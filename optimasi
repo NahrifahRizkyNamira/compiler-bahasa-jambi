@@ -1,0 +1,12 @@
+def optimize(ast):
+    hasil = []
+
+    for node in ast:
+        # hapus print kosong
+        if node[0] == "print":
+            if node[1] != "":
+                hasil.append(node)
+        else:
+            hasil.append(node)
+
+    return hasil
