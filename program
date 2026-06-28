@@ -1,0 +1,21 @@
+code = """
+a ngisi 10
+b ngisi 5
+
+kalo (a > b) {
+    tunjuk(a)
+} dak {
+    tunjuk(b)
+}
+"""
+
+tokens = lexer(code)
+parser = Parser(tokens)
+ast = parser.parse()
+
+ast = optimize(ast)
+
+hasil = generate(ast)
+
+print("=== COMPILER BAHASA JAMBI ===")
+print(hasil)
