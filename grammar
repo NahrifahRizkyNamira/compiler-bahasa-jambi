@@ -1,0 +1,7 @@
+program     → statement*
+statement   → if_stmt | assign_stmt | print_stmt
+if_stmt     → "kalo" "(" condition ")" "{" statement* "}" ["dak" "{" statement* "}"]
+assign_stmt → ID "ngisi" expr
+print_stmt  → "tunjuk" "(" ID ")"
+condition   → expr (">" | "<" | "==") expr
+expr        → NUMBER | ID
