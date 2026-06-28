@@ -1,0 +1,75 @@
+class Parser:
+    def __init__(self, tokens):
+        self.tokens = tokens
+        self.pos = 0
+
+    def current(self):
+        return self.tokens[self.pos] if self.pos < len(self.tokens) else None
+
+    def eat(self, kind):
+        if self.current() and self.current()[0] == kind:
+            self.pos += 1
+        else:
+            raise Exception(f"Error bahasa Jambi: butuh {kind}")
+
+    def parse(self):
+        result = []
+        while self.current():
+            result.append(self.statement())
+        return result
+
+    def statement(self):
+        if self.current()[0] == 'KALO':
+            return self.if_stmt()
+        elif self.current()[0] == 'ID':
+            return self.assign()
+        else:
+            return self.print_stmt()
+
+    def assign(self):
+        name = self.current()[1]
+        self.eat('ID')
+        self.eat('NGISI')
+        value = self.current()
+        self.pos += 1
+        return ("assign", name, value)
+
+    def print_stmt(self):
+        self.eat('TUNJUK')
+        self.eat('LPAREN')
+        var = self.current()[1]
+        self.eat('ID')
+        self.eat('RPAREN')
+        return ("print", var)
+
+    def if_stmt(self):
+        self.eat('KALO')
+        self.eat('LPAREN')
+        cond = self.condition()
+        self.eat('RPAREN')
+        self.eat('LBRACE')
+
+        body = []
+        while self.current() and self.current()[0] != 'RBRACE':
+            body.append(self.statement())
+
+        self.eat('RBRACE')
+
+        else_body = []
+        if self.current() and self.current()[0] == 'DAK':
+            self.eat('DAK')
+            self.eat('LBRACE')
+            while self.current() and self.current()[0] != 'RBRACE':
+                else_body.append(self.statement())
+            self.eat('RBRACE')
+
+        return ("if", cond, body, else_body)
+
+    def condition(self):
+        left = self.current()
+        self.pos += 1
+        op = self.current()[0]
+        self.pos += 1
+        right = self.current()
+        self.pos += 1
+        return (left, op, right)
