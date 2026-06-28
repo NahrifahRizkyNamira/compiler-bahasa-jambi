@@ -1,0 +1,14 @@
+class Assign:
+    def __init__(self, name, value):
+        self.name = name
+        self.value = value
+
+class Print:
+    def __init__(self, var):
+        self.var = var
+
+class If:
+    def __init__(self, cond, body, else_body):
+        self.cond = cond
+        self.body = body
+        self.else_body = else_body
