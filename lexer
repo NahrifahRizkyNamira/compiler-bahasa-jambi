@@ -1,0 +1,32 @@
+import re
+
+TOKEN_SPEC = [
+    ('NUMBER', r'\d+'),
+    ('KALO', r'kalo'),
+    ('DAK', r'dak'),
+    ('TUNJUK', r'tunjuk'),
+    ('NGISI', r'ngisi'),
+    ('LPAREN', r'\('),
+    ('RPAREN', r'\)'),
+    ('LBRACE', r'\{'),
+    ('RBRACE', r'\}'),
+    ('GT', r'>'),
+    ('LT', r'<'),
+    ('EQ', r'=='),
+    ('ID', r'[A-Za-z_][A-Za-z0-9_]*'),
+    ('SKIP', r'[ \t\n]+'),
+]
+
+token_regex = '|'.join(f'(?P<{n}>{r})' for n, r in TOKEN_SPEC)
+
+def lexer(code):
+    tokens = []
+    for m in re.finditer(token_regex, code):
+        kind = m.lastgroup
+        value = m.group()
+
+        if kind == 'SKIP':
+            continue
+
+        tokens.append((kind, value))
+    return tokens
